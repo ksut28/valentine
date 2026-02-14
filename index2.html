@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anchu - Will You Be My Valentine 💖</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --primary: #ff4d6d;
+            --secondary: #ff8fa3;
+            --bg-size: 400%;
+        }
+
+        *{margin:0;padding:0;box-sizing:border-box;}
+
+        body{
+            height:100vh;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffccd5, #fbc2eb);
+            background-size: var(--bg-size) var(--bg-size);
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Poppins', sans-serif;
+            overflow:hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* floating background hearts */
+        .heart{
+            position:fixed;
+            font-size:20px;
+            top: 100vh;
+            opacity:.8;
+            pointer-events:none;
+            animation: floatUp linear forwards;
+            z-index: 0;
+        }
+
+        @keyframes floatUp{
+            0% { transform: translateY(0) scale(.5) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) scale(1.5) rotate(360deg); opacity: 0; }
+        }
+
+        /* Mouse trail hearts */
+        .trail-heart {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.2rem;
+            animation: fadeOut 1s linear forwards;
+            z-index: 100;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -150%) scale(0.5); }
+        }
+
+        /* Card Setup */
+        .card{
+            position:relative;
+            width:100vw;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            backdrop-filter:blur(4px);
+            z-index: 1;
+        }
+
+        .inner{
+            max-width:520px;
+            width:90%;
+            height: auto;
+            min-height: 550px;
+            text-align:center;
+            padding:50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(255, 77, 109, 0.2);
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            animation: cardEntrance 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: scale(0.8) translateY(50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .gif-area{
+            height:210px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            margin-bottom: 10px;
+        }
+
+        .gif-area img{
+            max-height:190px;
+            border-radius:24px;
+            box-shadow:0 15px 35px rgba(255, 77, 109, 0.2);
+            border: 5px solid white;
+        }
+
+        h1{
+            font-family: 'Sacramento', cursive;
+            font-size:3.5rem;
+            color:var(--primary);
+            margin:10px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse{
+            0%,100%{transform:scale(1);}
+            50%{transform:scale(1.03);}
+        }
+
+        .message{
+            font-weight:600;
+            margin-bottom:30px;
+            min-height:24px;
+            color: #ff758f;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .btn-container{
+            width: 100%;
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+        }
+
+        .btn{
+            padding:16px 35px;
+            border-radius:50px;
+            border:none;
+            font-size:1.2rem;
+            font-weight:600;
+            cursor:pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .btn-yes{
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color:white;
+            box-shadow:0 10px 20px rgba(255,77,109,.3);
+            z-index: 5;
+        }
+
+        .btn-no{
+            background:white;
+            color:var(--primary);
+            border:2px solid var(--primary);
+            z-index: 1000; /* Ensure it's on top of everything */
+            /* Using transition for top/left for smooth glide */
+            transition: left 0.3s ease, top 0.3s ease, transform 0.2s ease;
+        }
+
+        .visualizer {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            gap: 4px;
+            align-items: flex-end;
+            height: 30px;
+            opacity: 0.3;
+        }
+        .bar {
+            width: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+        @keyframes wave {
+            0%, 100% { height: 5px; }
+            50% { height: 25px; }
+        }
+
+        canvas{
+            position:fixed;
+            inset:0;
+            pointer-events:none;
+            z-index:50;
+        }
+
+        .corner-flower {
+            position: fixed;
+            font-size: 4rem;
+            z-index: 0;
+            opacity: 0.2;
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div class="corner-flower" style="top: -10px; left: -10px;">🌸</div>
+<div class="corner-flower" style="top: -10px; right: -10px;">🌸</div>
+<div class="corner-flower" style="bottom: -10px; left: -10px;">🌸</div>
+<div class="corner-flower" style="bottom: -10px; right: -10px;">🌸</div>
+
+<div class="card" id="card">
+    <div class="inner" id="innerCard">
+        <!-- Visualizers -->
+        <div class="visualizer" style="left: 40px;">
+            <div class="bar" style="animation-delay: 0.1s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+            <div class="bar" style="animation-delay: 0.2s"></div>
+        </div>
+        <div class="visualizer" style="right: 40px;">
+            <div class="bar" style="animation-delay: 0.4s"></div>
+            <div class="bar" style="animation-delay: 0.2s"></div>
+            <div class="bar" style="animation-delay: 0.3s"></div>
+        </div>
+
+        <div class="gif-area">
+            <img id="mainGif">
+        </div>
+
+        <h1 id="title">Anchu - Will You Be My Valentine?</h1>
+        <p class="message" id="msg">Please? 🥺</p>
+
+        <div class="btn-container" id="btnWrapper">
+            <button class="btn btn-yes" id="yesBtn">Yes 💖</button>
+            <button class="btn btn-no" id="noBtn">No 💔</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const introGif = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2dyMTQweHRyYzQxZjVoYnBycXlranRhb205c2ZmOXg1MXR0eG1mdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SomQKXQltM5pRur1HY/giphy.gif";
+    const sadGifs = [
+        "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmp6dndsN2V0czg5MXQ1Y3J4c25kbTJ6N2F3ZTlqano0cDg2cmUxbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IFEyABqHRyg3CEMAlY/giphy.gif",
+        "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdG8wMWNqOGlrMzBvMDM4cjUwajZnY2J4Mm8ydWo2YTV2MWtmc21sdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/xwFMnHYOmHRzrV7QKv/giphy.gif",
+        "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzltdG1mNHh2YWxzOXg5dzQ5YmJybXQzdzVmZ3hxZHB5enU0Z3Z4eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/iRer7Xi65MTqSLlDpS/giphy.gif",
+        "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzRwaXd6cmVlbnhhdHJqb3I5bWw2c3RqMWV5bmNoaWc3OWltbWJrMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/DHKDB8OdEVMkwTX3IQ/giphy.gif"
+    ];
+
+    const mainGif=document.getElementById("mainGif");
+    mainGif.src=introGif;
+
+    /* ---------------- BACKGROUND HEARTS ---------------- */
+    function spawnHeart(){
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML=["💖","💗","💘","💕","🫶","🌹"][Math.floor(Math.random()*6)];
+        h.style.left=Math.random()*100+"vw";
+        h.style.animationDuration=(6+Math.random()*4)+"s";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),10000);
+    }
+    setInterval(spawnHeart, 500);
+
+    /* ---------------- MOUSE TRAIL ---------------- */
+    document.addEventListener('mousemove', (e) => {
+        if(Math.random() < 0.15) {
+            const t = document.createElement('div');
+            t.className = 'trail-heart';
+            t.innerText = '❤️';
+            t.style.left = e.clientX + 'px';
+            t.style.top = e.clientY + 'px';
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 800);
+        }
+    });
+
+    /* ---------------- BUTTON LOGIC ---------------- */
+    const noBtn=document.getElementById("noBtn");
+    const yesBtn=document.getElementById("yesBtn");
+    const msg=document.getElementById("msg");
+
+    const messages=["Are you sure? 🥺", "Think again 💔", "I'll cry 😭", "Don't do this 😢", "Pretty please 🥹"];
+
+    function overlap(r1, r2){
+        return !(r2.left > r1.right || r2.right < r1.left || r2.top > r1.bottom || r2.bottom < r1.top);
+    }
+
+    let yesScale = 1;
+
+    function moveNo(){
+        // Grow Yes Button
+        yesScale += 0.15;
+        yesBtn.style.transform = `scale(${yesScale})`;
+
+        // Use 'fixed' to position relative to the viewport window itself
+        // This stops the button from going out of bounds due to parent containers
+        noBtn.style.position = "fixed";
+
+        msg.innerText=messages[Math.floor(Math.random()*messages.length)];
+        mainGif.src=sadGifs[Math.floor(Math.random()*sadGifs.length)];
+
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        const btnW = noBtn.offsetWidth;
+        const btnH = noBtn.offsetHeight;
+
+        const yesRect = yesBtn.getBoundingClientRect();
+
+        let x, y, tries = 0;
+        const padding = 20;
+
+        do {
+            // Keep it within window bounds with a small padding
+            x = padding + Math.random() * (winW - btnW - (padding * 2));
+            y = padding + Math.random() * (winH - btnH - (padding * 2));
+            tries++;
+
+            if(tries > 100) break;
+
+            var cand = {
+                left: x,
+                top: y,
+                right: x + btnW,
+                bottom: y + btnH
+            };
+
+            // Avoid overlapping with the Yes button
+        } while(overlap(cand, yesRect));
+
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNo);
+    noBtn.addEventListener("click", moveNo);
+
+    /* ---------------- YES CLICK ---------------- */
+    yesBtn.onclick=()=>{
+        document.getElementById("btnWrapper").style.display="none";
+        document.getElementById("title").innerText="Yay!!! ❤️";
+        mainGif.src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bubu-dudu.gif";
+        msg.innerText="Best Valentine Ever 💞";
+        startFireworks();
+    };
+
+    /* ---------------- FIREWORKS ---------------- */
+    const canvas=document.getElementById("fireworks");
+    const ctx=canvas.getContext("2d");
+    canvas.width=innerWidth;
+    canvas.height=innerHeight;
+
+    let parts=[];
+    function startFireworks(){
+        function P(x,y,c){
+            this.x=x;this.y=y;this.c=c;
+            this.vx=(Math.random()-.5)*15;
+            this.vy=(Math.random()-.5)*15;
+            this.a=1;
+        }
+        P.prototype.u=function(){
+            this.x+=this.vx;
+            this.y+=this.vy;
+            this.vx*=.96;
+            this.vy*=.96;
+            this.a-=.015;
+            ctx.globalAlpha=this.a;
+            ctx.fillStyle=this.c;
+            ctx.beginPath();
+            ctx.arc(this.x,this.y,3,0,6.28);
+            ctx.fill();
+        };
+
+        function loop(){
+            if(parts.length === 0 && ctx.globalAlpha <= 0) return;
+            requestAnimationFrame(loop);
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            if(Math.random()<.2){
+                let x=Math.random()*canvas.width;
+                let y=Math.random()*canvas.height;
+                for(let i=0;i<30;i++)
+                    parts.push(new P(x,y,["#ff4d6d","#ffd700","#ffffff"][Math.floor(Math.random()*3)]));
+            }
+            parts=parts.filter(p=>p.a>0);
+            parts.forEach(p=>p.u());
+        }
+        loop();
+    }
+
+    window.onresize = () => {
+        canvas.width=innerWidth;
+        canvas.height=innerHeight;
+    };
+</script>
+
+</body>
+</html>
